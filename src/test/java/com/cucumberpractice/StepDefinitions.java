@@ -1,4 +1,4 @@
-package com.cucumberforbeginners;
+package com.cucumberpractice;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
