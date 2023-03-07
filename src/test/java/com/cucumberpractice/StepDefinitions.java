@@ -8,6 +8,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 
@@ -69,6 +70,19 @@ public class StepDefinitions {
                     "Expected: " + strExpectedMesg
                             + "\n Actual: " + strActualMesg[0]
             );
+        }
+    }
+
+    @Then("^element xpath \"(.*?)\" is displayed$")
+    public void elementXpathIsDisplayed(String strxpath) {
+        WebElement we = driver.findElement(By.xpath(strxpath));
+
+        if (we != null){
+            if (!we.isDisplayed())
+                Assert.fail(strxpath + " is not found.");
+        }
+        else {
+            Assert.fail(strxpath + " is not found.");
         }
     }
 }
