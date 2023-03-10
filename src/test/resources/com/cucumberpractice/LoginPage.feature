@@ -1,7 +1,7 @@
 Feature: Login Page
 
   @positive
-  Scenario: Successful Login
+  Scenario: Verify user is able to successfully log in
     Given login page "https://the-internet.herokuapp.com/login" is open
     When user enters "tomsmith" as the Username
     And user enters "SuperSecretPassword!" as the Password
