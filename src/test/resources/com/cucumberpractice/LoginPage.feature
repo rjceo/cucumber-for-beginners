@@ -18,13 +18,11 @@ Feature: Login Page
     And element xpath "//div/label[@for='password']/following-sibling::input[@id='password']" is displayed
     And element xpath "//button[@type='submit']" is displayed
 
-#  Scenario Outline: <sn> Outline Example
-#    Given example
-#    When <a>
-#    And  <b>
-#    Then ex
-#
-#    Examples:
-#      | sn | a        | b        |
-#      | 01 | asdfsf   | asdfasdf |
-#      | 02 | asdfasdf | asdfas   |
+  @negative
+  Scenario: Verify user is not able to login with an incorrect password
+    Given login page "https://the-internet.herokuapp.com/login" is open
+    When user enters "tomsmith" as the Username
+    And user enters "INCORRECT_PASSWORD" as the Password
+    And clicks on the login button
+    Then element xpath "//div[@id='flash'][contains(text(),'Your password is invalid!')]" is displayed
+    And page remains at "https://the-internet.herokuapp.com/login"

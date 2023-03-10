@@ -6,13 +6,13 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
 
-public class StepDefinitions {
+public class StepDefinitions_LoginPage {
 
     WebDriver driver;
 
@@ -52,13 +52,12 @@ public class StepDefinitions {
 
     @Then("^page is redirected to \"(.*?)\"$")
     public void pageIsRedirectedTo(String strExpectedURL) {
-        String strActualURL = driver.getCurrentUrl().toLowerCase().trim();
-        if (strActualURL.compareTo(strExpectedURL.trim().toLowerCase()) != 0) {
-            Assert.fail(
-                    "Expected: " + strExpectedURL
-                            + "\n Actual: " + strActualURL
-            );
-        }
+        VerifyURL(driver.getCurrentUrl().trim(), strExpectedURL);
+    }
+
+    @And("^page remains at \"(.*?)\"$")
+    public void pageRemainsAt(String strExpectedURL) {
+        VerifyURL(driver.getCurrentUrl().trim(), strExpectedURL);
     }
 
     @And("^message \"(.*?)\" is displayed$")
@@ -77,12 +76,22 @@ public class StepDefinitions {
     public void elementXpathIsDisplayed(String strxpath) {
         WebElement we = driver.findElement(By.xpath(strxpath));
 
-        if (we != null){
+        if (we != null) {
             if (!we.isDisplayed())
                 Assert.fail(strxpath + " is not found.");
-        }
-        else {
+        } else {
             Assert.fail(strxpath + " is not found.");
         }
     }
+
+    public void VerifyURL(String prevURL, String nextURL) {
+        if (prevURL.compareToIgnoreCase(nextURL.trim()) != 0) {
+            Assert.fail(
+                    "Expected: " + nextURL
+                            + "\n Actual: " + prevURL
+            );
+        }
+    }
+
+
 }
