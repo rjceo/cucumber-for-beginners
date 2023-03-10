@@ -18,7 +18,16 @@ Feature: Login Page
     And element xpath "//div/label[@for='password']/following-sibling::input[@id='password']" is displayed
     And element xpath "//button[@type='submit']" is displayed
 
-  @negative
+  @negative @username
+  Scenario: Verify user is not able to login with an incorrect username
+    Given login page "https://the-internet.herokuapp.com/login" is open
+    When user enters "tomsmith_incorrect" as the Username
+    And user enters "SuperSecretPassword!" as the Password
+    And clicks on the login button
+    Then element xpath "//div[@id='flash'][contains(text(),'Your username is invalid!')]" is displayed
+    And page remains at "https://the-internet.herokuapp.com/login"
+
+  @negative @password
   Scenario: Verify user is not able to login with an incorrect password
     Given login page "https://the-internet.herokuapp.com/login" is open
     When user enters "tomsmith" as the Username
@@ -26,3 +35,5 @@ Feature: Login Page
     And clicks on the login button
     Then element xpath "//div[@id='flash'][contains(text(),'Your password is invalid!')]" is displayed
     And page remains at "https://the-internet.herokuapp.com/login"
+
+
