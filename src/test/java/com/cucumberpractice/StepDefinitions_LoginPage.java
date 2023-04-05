@@ -10,7 +10,7 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 
 public class StepDefinitions_LoginPage {
 
@@ -18,8 +18,15 @@ public class StepDefinitions_LoginPage {
 
     @Before
     public void beforeScenario() {
-        System.setProperty("webdriver.chrome.com", "src/main/resources/chromedriver.exe");
-        driver = new ChromeDriver();
+        //System.setProperty("webdriver.chrome.com", "src/main/resources/chromedriver.exe");
+        System.setProperty("webdriver.edge.com", "src/main/resources/msedgedriver.exe");
+        //System.setProperty("webdriver.gecko.com", "src/main/resources/geckodriver.exe");
+
+
+        //driver = new ChromeDriver();
+        driver = new EdgeDriver();
+        //driver = new FirefoxDriver();
+
         driver.manage().window().maximize();
     }
 
@@ -74,7 +81,7 @@ public class StepDefinitions_LoginPage {
 
     @Then("^element xpath \"(.*?)\" is displayed$")
     public void elementXpathIsDisplayed(String strxpath) {
-        WebElement we = driver.findElement(By.xpath(strxpath));
+        WebElement we = driver.findElement(By.xpath(strxpath.trim()));
 
         if (we != null) {
             if (!we.isDisplayed())
@@ -94,4 +101,10 @@ public class StepDefinitions_LoginPage {
     }
 
 
+    @When("^element xpath \"(.*?)\" is clicked$")
+    public void elementXpathIsClicked(String strxpath) throws InterruptedException {
+        WebElement we = driver.findElement(By.xpath(strxpath.trim()));
+        we.click();
+        Thread.sleep(2000);
+    }
 }
