@@ -10,7 +10,6 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.edge.EdgeDriver;
 
 public class StepDefinitions_LoginPage {
 
@@ -18,16 +17,15 @@ public class StepDefinitions_LoginPage {
 
     @Before
     public void beforeScenario() {
-        //System.setProperty("webdriver.chrome.com", "src/main/resources/chromedriver.exe");
-        System.setProperty("webdriver.edge.com", "src/main/resources/msedgedriver.exe");
-        //System.setProperty("webdriver.gecko.com", "src/main/resources/geckodriver.exe");
-
-
-        //driver = new ChromeDriver();
-        driver = new EdgeDriver();
-        //driver = new FirefoxDriver();
-
-        driver.manage().window().maximize();
+        try{
+            driver = Common.UseDriver("edge");
+            driver.manage().window().maximize();
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+            if (driver != null)
+                driver.quit();
+        }
     }
 
     @After
