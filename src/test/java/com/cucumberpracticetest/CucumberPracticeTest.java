@@ -1,4 +1,4 @@
-package com.cucumberpractice;
+package com.cucumberpracticetest;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
@@ -8,8 +8,8 @@ import org.junit.runner.RunWith;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         //tags = "@negative or @positive"
-    tags = "@loginpage and @positive"
+    //tags = "@loginpage and @positive"
 )
 
-public class CucumberPractice {
+public class CucumberPracticeTest {
 }

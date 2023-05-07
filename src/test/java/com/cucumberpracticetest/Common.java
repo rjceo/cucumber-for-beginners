@@ -1,4 +1,4 @@
-package com.cucumberpractice;
+package com.cucumberpracticetest;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
