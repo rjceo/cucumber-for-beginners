@@ -6,7 +6,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -70,7 +70,7 @@ public class StepDefinitions {
         String[] strActualMesg = driver.findElement(By.id("flash")).getText().trim().split("\n");
 
         if (strActualMesg[0].compareTo(strExpectedMesg.trim()) != 0) {
-            Assert.fail(
+            Assertions.fail(
                     "Expected: " + strExpectedMesg
                             + "\n Actual: " + strActualMesg[0]
             );
@@ -83,15 +83,15 @@ public class StepDefinitions {
 
         if (we != null) {
             if (!we.isDisplayed())
-                Assert.fail(strxpath + " is not found.");
+                Assertions.fail(strxpath + " is not found.");
         } else {
-            Assert.fail(strxpath + " is not found.");
+            Assertions.fail(strxpath + " is not found.");
         }
     }
 
     public void VerifyURL(String prevURL, String nextURL) {
         if (prevURL.compareToIgnoreCase(nextURL.trim()) != 0) {
-            Assert.fail(
+            Assertions.fail(
                     "Expected: " + nextURL
                             + "\n Actual: " + prevURL
             );
