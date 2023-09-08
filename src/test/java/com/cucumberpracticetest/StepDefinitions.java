@@ -18,7 +18,7 @@ public class StepDefinitions {
     @Before
     public void beforeScenario() {
         try{
-            driver = Common.UseDriver("edge");
+            driver = Common.UseDriver("firefox");
             driver.manage().window().maximize();
         }
         catch (Exception ex){
