@@ -30,7 +30,6 @@ public class StepDefinitions {
 
     @After
     public void afterScenario() {
-        //driver.close();
         driver.quit();
     }
 
