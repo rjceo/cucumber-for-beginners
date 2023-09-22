@@ -46,14 +46,9 @@ public class Common {
         WebElement we = wb.findElement(xp);
 
         if (we != null) {
-            if (!we.isDisplayed())
-                return false;
-                //Assertions.fail(xp.toString() + " is not found.");
+            return we.isDisplayed();
         } else {
             return false;
-            //Assertions.fail(xp.toString() + " is not found.");
         }
-
-        return true;
     }
 }

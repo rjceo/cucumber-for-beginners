@@ -128,6 +128,8 @@ public class StepDefinitions {
         String[] strActual = driver.findElement(By.xpath(strPar)).getText().trim().split("\n");
         if (!strActual[0].equals(strError))
             Assertions.fail("Error message is not as expected.");
+
+        Thread.sleep(2000);
     }
 
     @And("the logout button is displayed")
