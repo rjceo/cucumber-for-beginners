@@ -50,7 +50,7 @@ public class StepDefinitions {
 
     @And("clicks on the login button")
     public void clicksOnTheLoginButton() throws InterruptedException {
-        driver.findElement(By.xpath("//button[@type='submit']")).click();
+        Common.clickElement(driver, By.xpath("//button[@type='submit']"));
         Thread.sleep(2000);
     }
 
@@ -62,30 +62,6 @@ public class StepDefinitions {
     @And("^page remains at \"(.*?)\"$")
     public void pageRemainsAt(String strExpectedURL) {
         VerifyURL(driver.getCurrentUrl().trim(), strExpectedURL);
-    }
-
-    @And("^message \"(.*?)\" is displayed$")
-    public void messageIsDisplayed(String strExpectedMesg) {
-        String[] strActualMesg = driver.findElement(By.id("flash")).getText().trim().split("\n");
-
-        if (strActualMesg[0].compareTo(strExpectedMesg.trim()) != 0) {
-            Assertions.fail(
-                    "Expected: " + strExpectedMesg
-                            + "\n Actual: " + strActualMesg[0]
-            );
-        }
-    }
-
-    @Then("^element xpath \"(.*?)\" is displayed$")
-    public void elementXpathIsDisplayed(String strxpath) {
-        WebElement we = driver.findElement(By.xpath(strxpath.trim()));
-
-        if (we != null) {
-            if (!we.isDisplayed())
-                Assertions.fail(strxpath + " is not found.");
-        } else {
-            Assertions.fail(strxpath + " is not found.");
-        }
     }
 
     public void VerifyURL(String prevURL, String nextURL) {
@@ -102,6 +78,81 @@ public class StepDefinitions {
     public void elementXpathIsClicked(String strxpath) throws InterruptedException {
         WebElement we = driver.findElement(By.xpath(strxpath.trim()));
         we.click();
+        Thread.sleep(2000);
+    }
+
+    @When("clicks on the logout button")
+    public void clicksOnTheLogoutButton() throws InterruptedException{
+        Common.clickElement(driver, By.xpath("//a[@class='button secondary radius'][@href='/logout']"));
+        Thread.sleep(2000);
+    }
+
+    @Then("the label {string} is displayed")
+    public void theLabelIsDisplayed(String strLabel) throws InterruptedException{
+        String strPar = "//div/label[contains(text(),'" + strLabel + "')]";
+        if (!Common.isElementDisplayed(driver, By.xpath(strPar)))
+            Assertions.fail(strLabel.concat(": label is not as expected OR label is not displayed"));
+        Thread.sleep(2000);
+    }
+
+    @And("the empty textbox below the {string} is displayed")
+    public void theEmptyTextboxBelowTheUsernameIsDisplayed(String strLabel) throws InterruptedException{
+        String strPar = "//div/label[contains(text(),'" + strLabel + "')]/following-sibling::input";
+        if (!Common.isElementDisplayed(driver, By.xpath(strPar)))
+            Assertions.fail("Textbox ".concat(strLabel).concat(" is not displayed."));
+
+        if (!driver.findElement(By.xpath(strPar)).getText().isEmpty())
+           Assertions.fail("Textbox ".concat(strLabel).concat(" is not empty."));
+
+        Thread.sleep(2000);
+    }
+
+    @Then("the login button is displayed")
+    public void theLoginButtonIsDisplayed() throws InterruptedException{
+        String strPath = "//button[@type='submit']";
+        if (!Common.isElementDisplayed(driver, By.xpath(strPath)))
+            Assertions.fail(strPath.concat(" is not displayed."));
+        Thread.sleep(2000);
+    }
+
+    @Then("message {string} is displayed")
+    public void MessageIsDisplayed(String strError) throws InterruptedException{
+        String strPar = "//div[@id='flash'][contains(text(),'" + strError + "')]";
+        if (!Common.isElementDisplayed(driver, By.xpath(strPar)))
+            Assertions.fail(strError.concat(" is not displayed."));
+
+        /*
+        * The driver returns a message with a new line (\n)
+        * in between the actual message and an 'x' character.
+        * */
+        String[] strActual = driver.findElement(By.xpath(strPar)).getText().trim().split("\n");
+        if (!strActual[0].equals(strError))
+            Assertions.fail("Error message is not as expected.");
+    }
+
+    @And("the logout button is displayed")
+    public void theLogoutButtonIsDisplayed() throws InterruptedException{
+        String strPath = "//div[@class='example']/h2/following-sibling::h4/following-sibling::a[@class='button secondary radius']/i[contains(text(),'Logout')]";
+        if(!Common.isElementDisplayed(driver, By.xpath(strPath)))
+            Assertions.fail(strPath.concat(" is not displayed."));
+        Thread.sleep(2000);
+    }
+
+    @And("the header {string} is displayed")
+    public void theHeaderIsDisplayed(String strHeader) throws InterruptedException{
+        String strPath="//div[@class='example']/h2[contains(text(),'" + strHeader + "')]";
+        if(!Common.isElementDisplayed(driver, By.xpath(strPath)))
+            Assertions.fail(strPath.concat(" is not displayed."));
+
+        Thread.sleep(2000);
+    }
+
+    @And("the sub-header {string} is displayed")
+    public void theSubHeaderIsDisplayed(String strSubHeader) throws InterruptedException {
+        String strPath="//div[@class='example']/h2/following-sibling::h4[contains(text(),'" + strSubHeader + "')]";
+        if(!Common.isElementDisplayed(driver, By.xpath(strPath)))
+            Assertions.fail(strPath.concat(" is not displayed."));
+
         Thread.sleep(2000);
     }
 }

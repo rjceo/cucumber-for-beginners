@@ -1,6 +1,8 @@
 package com.cucumberpracticetest;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -34,5 +36,24 @@ public class Common {
             driver = new FirefoxDriver();
 
         return driver;
+    }
+
+    public static void clickElement(WebDriver wb, By xp){
+        WebElement we = wb.findElement(xp);
+        we.click();
+    }
+    public static Boolean isElementDisplayed(WebDriver wb, By xp){
+        WebElement we = wb.findElement(xp);
+
+        if (we != null) {
+            if (!we.isDisplayed())
+                return false;
+                //Assertions.fail(xp.toString() + " is not found.");
+        } else {
+            return false;
+            //Assertions.fail(xp.toString() + " is not found.");
+        }
+
+        return true;
     }
 }
