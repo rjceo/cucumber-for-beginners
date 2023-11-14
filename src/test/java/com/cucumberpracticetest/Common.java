@@ -1,19 +1,24 @@
 package com.cucumberpracticetest;
 
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.io.FileHandler;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.Properties;
 import java.util.UUID;
 
 public class Common {
-    public int WaitMS;
     private  String screenShot;
     private  String screenShotExt;
 
@@ -23,7 +28,6 @@ public class Common {
             Properties prop = new Properties();
             prop.load(fs);
 
-            WaitMS = Integer.parseInt(prop.getProperty("waitms").trim());
             screenShot = prop.getProperty("screenshot.directory").trim();
             screenShotExt = prop.getProperty("screenshot.extension").trim();
 
@@ -40,22 +44,11 @@ public class Common {
     public WebDriver UseDriver(String strBrowser){
         WebDriver driver;
 
-/*        if (strBrowser.trim().compareToIgnoreCase("edge") == 0){
-            System.setProperty("webdriver.edge.com", "src/main/resources/msedgedriver.exe");
-            EdgeOptions ops = new EdgeOptions();
-            ops.addArguments("--remote-allow-origins=*");
-            driver = new EdgeDriver(ops);
-        }
-        else if (strBrowser.trim().compareToIgnoreCase("chrome") == 0) {
-            System.setProperty("webdriver.chrome.com", "src/main/resources/chromedriver.exe");
-            ChromeOptions ops2 = new ChromeOptions();
-            ops2.addArguments("--remote-allow-origins=*");
-            driver = new ChromeDriver(ops2);
-        }
-        else { //Firefox
-            System.setProperty("webdriver.gecko.com", "src/main/resources/geckodriver.exe");
-            driver = new FirefoxDriver();
-        }*/
+/*
+          System.setProperty("webdriver.edge.com", "src/main/resources/msedgedriver.exe");
+          System.setProperty("webdriver.chrome.com", "src/main/resources/chromedriver.exe");
+          System.setProperty("webdriver.gecko.com", "src/main/resources/geckodriver.exe");
+*/
 
         if (strBrowser.trim().compareToIgnoreCase("edge") == 0)
             driver = new EdgeDriver();
@@ -68,8 +61,15 @@ public class Common {
     }
 
     public void clickElement(WebDriver wb, By xp){
-        WebElement we = wb.findElement(xp);
-        we.click();
+        WebDriverWait wait = new WebDriverWait(wb, Duration.ofSeconds(10));
+
+        if (wait.until(ExpectedConditions.and(
+                ExpectedConditions.visibilityOf(wb.findElement(xp)),
+                ExpectedConditions.elementToBeClickable(xp)))){
+            wb.findElement(xp).click();
+        }
+        else
+            Assertions.fail("Element is not visible and/or clickable.");
     }
     public Boolean isElementDisplayed(WebDriver wb, By xp){
         WebElement we = wb.findElement(xp);
@@ -91,7 +91,6 @@ public class Common {
         catch (IOException ex){
             System.out.println(ex.getMessage());
         }
-
 
     }
 }

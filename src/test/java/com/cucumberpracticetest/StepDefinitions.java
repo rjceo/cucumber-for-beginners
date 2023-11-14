@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class StepDefinitions {
 
@@ -21,6 +23,7 @@ public class StepDefinitions {
         try{
             driver = common.UseDriver("firefox");
             driver.manage().window().maximize();
+
         }
         catch (Exception ex){
             System.out.println(ex.getMessage());
@@ -41,18 +44,21 @@ public class StepDefinitions {
 
     @When("^user enters \"(.*?)\" as the Username$")
     public void userEntersAsTheUsername(String strUsername) {
-        driver.findElement(By.id("username")).sendKeys(strUsername.trim());
+        WebDriverWait wait = new WebDriverWait(driver, java.time.Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("username")))).sendKeys(strUsername.trim());
     }
 
     @And("^user enters \"(.*?)\" as the Password$")
     public void userEntersAsThePassword(String strPassword) {
-        driver.findElement(By.id("password")).sendKeys(strPassword.trim());
+        WebDriverWait wait = new WebDriverWait(driver, java.time.Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("password")))).sendKeys(strPassword.trim());
+
     }
 
     @And("clicks on the login button")
     public void clicksOnTheLoginButton() throws InterruptedException {
         common.clickElement(driver, By.xpath("//button[@type='submit']"));
-        Thread.sleep(common.WaitMS);
+        Thread.sleep(1000);
     }
 
     @Then("^page is redirected to \"(.*?)\"$")
@@ -79,13 +85,13 @@ public class StepDefinitions {
     public void elementXpathIsClicked(String strxpath) throws InterruptedException {
         WebElement we = driver.findElement(By.xpath(strxpath.trim()));
         we.click();
-        Thread.sleep(common.WaitMS);
+        Thread.sleep(1000);
     }
 
     @When("clicks on the logout button")
     public void clicksOnTheLogoutButton() throws InterruptedException{
         common.clickElement(driver, By.xpath("//a[@class='button secondary radius'][@href='/logout']"));
-        Thread.sleep(common.WaitMS);
+        Thread.sleep(1000);
     }
 
     @Then("the label {string} is displayed")
@@ -93,7 +99,7 @@ public class StepDefinitions {
         String strPar = "//div/label[contains(text(),'" + strLabel + "')]";
         if (!common.isElementDisplayed(driver, By.xpath(strPar)))
             Assertions.fail(strLabel.concat(": label is not as expected OR label is not displayed"));
-        Thread.sleep(common.WaitMS);
+        Thread.sleep(1000);
     }
 
     @And("the empty textbox below the {string} is displayed")
@@ -105,7 +111,7 @@ public class StepDefinitions {
         if (!driver.findElement(By.xpath(strPar)).getText().isEmpty())
            Assertions.fail("Textbox ".concat(strLabel).concat(" is not empty."));
 
-        Thread.sleep(common.WaitMS);
+        Thread.sleep(1000);
     }
 
     @Then("the login button is displayed")
@@ -113,7 +119,7 @@ public class StepDefinitions {
         String strPath = "//button[@type='submit']";
         if (!common.isElementDisplayed(driver, By.xpath(strPath)))
             Assertions.fail(strPath.concat(" is not displayed."));
-        Thread.sleep(common.WaitMS);
+        Thread.sleep(1000);
     }
 
     @Then("message {string} is displayed")
@@ -130,7 +136,7 @@ public class StepDefinitions {
         if (!strActual[0].equals(strError))
             Assertions.fail("Error message is not as expected.");
 
-        Thread.sleep(common.WaitMS);
+        Thread.sleep(1000);
     }
 
     @And("the logout button is displayed")
@@ -138,7 +144,7 @@ public class StepDefinitions {
         String strPath = "//div[@class='example']/h2/following-sibling::h4/following-sibling::a[@class='button secondary radius']/i[contains(text(),'Logout')]";
         if(!common.isElementDisplayed(driver, By.xpath(strPath)))
             Assertions.fail(strPath.concat(" is not displayed."));
-        Thread.sleep(common.WaitMS);
+        Thread.sleep(1000);
     }
 
     @And("the header {string} is displayed")
@@ -147,7 +153,7 @@ public class StepDefinitions {
         if(!common.isElementDisplayed(driver, By.xpath(strPath)))
             Assertions.fail(strPath.concat(" is not displayed."));
 
-        Thread.sleep(common.WaitMS);
+        Thread.sleep(1000);
     }
 
     @And("the sub-header {string} is displayed")
@@ -156,6 +162,6 @@ public class StepDefinitions {
         if(!common.isElementDisplayed(driver, By.xpath(strPath)))
             Assertions.fail(strPath.concat(" is not displayed."));
 
-        Thread.sleep(common.WaitMS);
+        Thread.sleep(1000);
     }
 }
